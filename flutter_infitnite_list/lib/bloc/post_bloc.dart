@@ -1,13 +1,14 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:io';
 
-import 'package:flutter/cupertino.dart';
+import 'package:meta/meta.dart';
 import 'package:http/http.dart' as http;
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import '../models/post.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:rxdart/rxdart.dart';
 
+import '../models/post.dart';
 part 'post_event.dart';
 part 'post_state.dart';
 
@@ -17,6 +18,15 @@ class PostBloc extends Bloc<PostEvent, PostState> {
 
   @override
   PostState get initialState => PostInitial();
+
+  @override
+  Stream<Transition<PostEvent, PostState>> transformEvents(
+      Stream<PostEvent> events, transitionFn) {
+    return super.transformEvents(
+      events.debounceTime(const Duration(milliseconds: 500)),
+      transitionFn,
+    );
+  }
 
   @override
   Stream<PostState> mapEventToState(
