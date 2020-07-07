@@ -22,4 +22,14 @@ class WeatherApiClient {
     final weatherJson = jsonDecode(weatherResponse.body);
     return Weather.fromJson(weatherJson);
   }
+
+  Future<int> getLocationId(String city) async {
+    final locationUrl = '$baseUrl/api/location/search/?query=$city';
+    final locationResponse = await this.httpClient.get(locationUrl);
+    if (locationResponse.statusCode != 200) {
+      throw Exception('Error getting locationId for city');
+    }
+    final locationJson = jsonDecode(locationResponse.body) as List;
+    return (locationJson.first)['woeid'];
+  }
 }
