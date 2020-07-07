@@ -3,9 +3,9 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/semantics.dart';
-import 'package:flutter_login/bloc/authentication_bloc.dart';
-import 'package:flutter_login/user_repository.dart';
+
+import '../user_repository.dart';
+import '../bloc/authentication_bloc.dart';
 
 part 'login_event.dart';
 part 'login_state.dart';
