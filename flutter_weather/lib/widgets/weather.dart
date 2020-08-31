@@ -35,7 +35,18 @@ class _WeatherState extends State<Weather> {
                     .add(WeatherRequested(city: city));
               }
             },
-          )
+          ),
+          IconButton(
+            icon: Icon(Icons.settings),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => Settings(),
+                ),
+              );
+            },
+          ),
         ],
       ),
       body: Center(
