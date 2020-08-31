@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'dart:async';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_weather/widgets/gradient_container.dart';
 import '../bloc/blocs.dart';
 import './widgets.dart';
 
@@ -59,38 +60,45 @@ class _WeatherState extends State<Weather> {
             if (state is WeatherLoadSuccess) {
               final weather = state.weather;
 
-              return RefreshIndicator(
-                onRefresh: () {
-                  BlocProvider.of<WeatherBloc>(context).add(
-                    WeatherRefreshRequested(city: state.weather.location),
+              return BlocBuilder<ThemeBloc, ThemeState>(
+                builder: (context, themeState) {
+                  return GradientContainer(
+                    color: themeState.color,
+                    child: RefreshIndicator(
+                      onRefresh: () {
+                        BlocProvider.of<WeatherBloc>(context).add(
+                          WeatherRefreshRequested(city: state.weather.location),
+                        );
+                        return _refreshCompleter.future;
+                      },
+                      child: ListView(
+                        children: [
+                          Padding(
+                            padding: EdgeInsets.only(top: 100.0),
+                            child: Center(
+                              child: Location(
+                                location: weather.location,
+                              ),
+                            ),
+                          ),
+                          Center(
+                            child: LastUpdated(
+                              dateTime: weather.lastUpdated,
+                            ),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.symmetric(vertical: 50.0),
+                            child: Center(
+                              child: CombinedWeatherTemperature(
+                                weather: weather,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
                   );
-                  return _refreshCompleter.future;
                 },
-                child: ListView(
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.only(top: 100.0),
-                      child: Center(
-                        child: Location(
-                          location: weather.location,
-                        ),
-                      ),
-                    ),
-                    Center(
-                      child: LastUpdated(
-                        dateTime: weather.lastUpdated,
-                      ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.symmetric(vertical: 50.0),
-                      child: Center(
-                        child: CombinedWeatherTemperature(
-                          weather: weather,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
               );
             }
             if (state is WeatherLoadFailure) {
