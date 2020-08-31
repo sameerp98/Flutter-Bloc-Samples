@@ -54,6 +54,14 @@ class Weather extends StatelessWidget {
                     child: LastUpdated(
                       dateTime: weather.lastUpdated,
                     ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.symmetric(vertical: 50.0),
+                    child: Center(
+                      child: CombinedWeatherTemperature(
+                        weather: weather,
+                      ),
+                    ),
                   )
                 ],
               );

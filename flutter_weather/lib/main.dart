@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:http/http.dart' as http;
+
 import 'package:flutter_weather/bloc/weather_bloc.dart';
 import 'package:flutter_weather/repositories/repositaries.dart';
 import './widgets/widgets.dart';
@@ -8,7 +10,10 @@ import './simple_bloc_delegate.dart';
 
 void main() {
   BlocSupervisor.delegate = SimpleBlocDelegate();
-  runApp(App());
+  runApp(App(
+    weatherRepository: WeatherRepository(
+        weatherApiClient: WeatherApiClient(httpClient: http.Client())),
+  ));
 }
 
 class App extends StatelessWidget {
